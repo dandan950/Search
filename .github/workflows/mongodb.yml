@@ -1,0 +1,20 @@
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    services:
+      mongodb:
+        image: mongodb/mongodb-atlas-local
+        ports:
+          - 27017:27017
+    steps:
+      - name: install mongosh
+        run: |
+         curl --output mongosh.deb https://downloads.mongodb.com/compass/mongodb-mongosh_2.2.1_amd64.deb
+         sudo dpkg -i mongosh.deb
+         mongosh --version
+     - run: mongosh 'mongodb://localhost/?directConnection=true' --eval 'show dbs'
